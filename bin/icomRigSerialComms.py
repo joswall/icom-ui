@@ -56,13 +56,31 @@ def proc_rcvd_bytes():
     logging.debug('  Orig: ' + str(rcvd_bytes[1]) + ' Dest: ' + str(rcvd_bytes[0]) + ' Cmd: ' + str(rcvd_bytes[2]))
     logging.debug('')
     if rcvd_bytes[2] == cmd_freq:
-        logging.debug('  Freq: ' + str(binascii.hexlify(rcvd_bytes[7]))+ str(binascii.hexlify(rcvd_bytes[6])) + str(binascii.hexlify(rcvd_bytes[5])) + str(binascii.hexlify(rcvd_bytes[4]))+ str(binascii.hexlify(rcvd_bytes[3])))
         logging.debug('  Freq: ' + bytesToHexStr(rcvd_bytes[7]) + 
             bytesToHexStr(rcvd_bytes[6]) + bytesToHexStr(rcvd_bytes[5]) + 
             bytesToHexStr(rcvd_bytes[4])+ bytesToHexStr(rcvd_bytes[3]))
 
 def bytesToHexStr(tbytes):
     return str(binascii.hexlify(tbytes))
+
+def getFreqFromBytes(rcvd_bytes):
+    # breakpoint()
+    #process 5 bytes, 3 to 7 into freq
+    tenHz = (str(bytesToHexStr(rcvd_bytes[3]))[2])
+    #tenHz = 
+    oneHz = (str(bytesToHexStr(rcvd_bytes[3]))[3])
+    onekHz = (bytesToHexStr(rcvd_bytes[4])[2])
+    hundredHz = (bytesToHexStr(rcvd_bytes[4])[3])
+    hundredkHz = (bytesToHexStr(rcvd_bytes[5])[2])
+    tenkHz = (bytesToHexStr(rcvd_bytes[5])[3])
+    tenMHz = (bytesToHexStr(rcvd_bytes[6])[2])
+    oneMHz = (bytesToHexStr(rcvd_bytes[6])[3])
+    thousandMHz = (bytesToHexStr(rcvd_bytes[7])[2])
+    hundredMHz = (bytesToHexStr(rcvd_bytes[7])[3])
+    print('Freq: ' + tenMHz + oneMHz + '.' +
+        hundredkHz + tenkHz + onekHz + '.' + hundredHz + tenHz + oneHz)
+
+
 
 
 while True:
@@ -72,8 +90,8 @@ while True:
     # breakpoint()
     logging.debug('  ' + str(rcvd_bytes))
     proc_rcvd_bytes()
+    getFreqFromBytes(rcvd_bytes)
    
-    #val = hex(int(binascii.hexlify(ser.read(1)), base=16)+6)
-    # print('CIV Bytes: ' + val)
+    
    
     
