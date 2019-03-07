@@ -1,10 +1,16 @@
 
 import serial
 import logging
-import config.my_config as my_config
+from config import my_config as my_config
 import binascii
+from bin import rigobj
+
 # import binhex
 # import base64
+
+myRig = rigobj.MyRig
+
+# myRig = rigobj.MyRig()
 
 # declare variablbes
 pream_byte = bytes([0xfe])
@@ -21,6 +27,10 @@ logging.basicConfig(format='%(levelname)s:%(message)s ', level=my_config.logLeve
 ser = serial.Serial(port=my_config.comport, baudrate=my_config.baud, parity=serial.PARITY_NONE, rtscts=0)
 ser.reset_input_buffer # flush the buffer so we start clean
 # print(ser.name)
+
+def start(rigobj):
+    myRig = rigobj
+
 
 # function to read from rig when we just listening
 def read_radio_s():
@@ -77,8 +87,20 @@ def getFreqFromBytes(rcvd_bytes):
     oneMHz = (bytesToHexStr(rcvd_bytes[6])[3])
     thousandMHz = (bytesToHexStr(rcvd_bytes[7])[2])
     hundredMHz = (bytesToHexStr(rcvd_bytes[7])[3])
-    print('Freq: ' + tenMHz + oneMHz + '.' +
-        hundredkHz + tenkHz + onekHz + '.' + hundredHz + tenHz + oneHz)
+    
+    # print('Freq: ' + tenMHz + oneMHz + '.' +
+    #    hundredkHz + tenkHz + onekHz + '.' + hundredHz + tenHz + oneHz)
+    
+    try:
+        freq = str(tenMHz + oneMHz + '.' + hundredkHz + tenkHz + onekHz + '.' + hundredHz + tenHz + oneHz)
+        myRig.setFreq(myRig, freq)
+    
+        print('Freq: ' + myRig.freq)
+    except():
+        print('Error printing freq')
+
+
+
 
 
 
